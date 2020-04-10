@@ -191,11 +191,15 @@ const obj = {
     },
   };
 
+
 const textarea = document.getElementById('textarea');
 const keyboard=Object.keys(obj);
 let CapsLockStatus = false;
 let ShiftStatus = false;
-let lenguageStatus = 'en';
+let lenguageStatus;
+lenguageStatus = localStorage["lenguageStatusKey"];
+if(lenguageStatus==undefined){lenguageStatus='en'}
+
 let keyStatus = '1';
 let keyboardOut = [];
 
@@ -213,6 +217,19 @@ function getValue(object, key) {
         }
     }) && result;    
 }
+
+
+if (ShiftStatus === false && CapsLockStatus === false && lenguageStatus === 'en' ){keyStatus = '1'};
+if (ShiftStatus === true && CapsLockStatus === false && lenguageStatus === 'en' ){keyStatus = '2'};
+if (ShiftStatus === false && CapsLockStatus === false && lenguageStatus === 'ru' ){keyStatus = '3'};
+if (ShiftStatus === true && CapsLockStatus === false && lenguageStatus === 'ru' ){keyStatus = '4'};
+if (ShiftStatus === false && CapsLockStatus === true && lenguageStatus === 'en' ){keyStatus = '5'};
+if (ShiftStatus === true && CapsLockStatus === true && lenguageStatus === 'en' ){keyStatus = '6'};
+if (ShiftStatus === false && CapsLockStatus === true && lenguageStatus === 'ru' ){keyStatus = '7'};
+if (ShiftStatus === true && CapsLockStatus === true && lenguageStatus === 'ru' ){keyStatus = '8'};
+
+
+
 function keyStatusRun (){
 if (ShiftStatus === false && CapsLockStatus === false && lenguageStatus === 'en' ){keyStatus = '1'};
 if (ShiftStatus === true && CapsLockStatus === false && lenguageStatus === 'en' ){keyStatus = '2'};
@@ -222,12 +239,13 @@ if (ShiftStatus === false && CapsLockStatus === true && lenguageStatus === 'en' 
 if (ShiftStatus === true && CapsLockStatus === true && lenguageStatus === 'en' ){keyStatus = '6'};
 if (ShiftStatus === false && CapsLockStatus === true && lenguageStatus === 'ru' ){keyStatus = '7'};
 if (ShiftStatus === true && CapsLockStatus === true && lenguageStatus === 'ru' ){keyStatus = '8'};
-init();
+rewriteKeyboard();
 }
 
 
 
-function init() {
+
+ function writeObj(){
 for (let i = 0; i < keyboard.length; i++){
   let outForOut;
   if (ShiftStatus === false){ shiftUp = 1;}else{shiftUp = 2;}
@@ -247,9 +265,14 @@ for (let i = 0; i < keyboard.length; i++){
    
   }
   keyboardOut[i] = outForOut;
+
 }
 
+ }
+ writeObj()
 
+
+function init() {
     let outInit = '';
     
     for (let i = 0; i < keyboard.length; i++){
@@ -261,11 +284,22 @@ for (let i = 0; i < keyboard.length; i++){
       outInit += '<div class="keyboard__key ' + keyboard[i] + '" data="' + keyboard[i] + '" >' + keyboardOut[i] + '</div>';
     }
     }
-    
     document.querySelector('#keyboard').innerHTML = outInit;
-
   }
 init();
+
+
+
+function rewriteKeyboard(){
+
+  writeObj()
+  let rewrite;
+  for (let i = 0; i < keyboardOut.length; i++){
+    rewrite=document.querySelector('.'+keyboard[i]+'');
+    if (keyboard[i]==='Tab'){rewrite.textContent='Tab'}else{
+    rewrite.textContent = keyboardOut[i];}
+  }
+}
 
 
 
@@ -275,7 +309,11 @@ document.onkeydown = function (event) {
   document.querySelectorAll('#keyboard .keyboard__key').forEach(function (element){
       element.classList.remove('active');
   });
+  try {
 document.querySelector('.'+event.code).classList.add('active');
+  }
+  catch (err) {fgh()};
+  if (event.code==='undefined'){event.code=''};
 CapsLockInformation(event.code);
 ShiftDownInformation(event.code);
 
@@ -285,16 +323,22 @@ document.onkeyup = function (event) {
   let data;
   let BackspaceKey = '';
   let DataBackspaceKey = '';
+  try {
   document.querySelector('.'+event.code).classList.remove('active');
+  }
+  catch (err) {fgh()};
   data =  getValue(obj, event.code);
-  console.log(event);
+
   data = getValue(data, keyStatus);
   DataBackspaceKey = event.code;
   let {value} =  data;
   data = value;
-  
+
+   if (data==undefined){data=''};
+ 
   document.getElementById('textarea').value += data;  
   BackspaceKey=document.getElementById('textarea').value;
+ 
   if (DataBackspaceKey==='Backspace'){
   document.getElementById('textarea').value = BackspaceRun (BackspaceKey);
   BackspaceKey = '';
@@ -305,7 +349,7 @@ document.onkeyup = function (event) {
 
 document.querySelectorAll('#keyboard .keyboard__key').forEach(function (element) {
   element.onmousedown = function (event) {
-    console.log(event);
+  
       document.querySelectorAll('#keyboard .keyboard__key').forEach( function (element){
           element.classList.remove('active');
       });
@@ -319,7 +363,7 @@ document.querySelectorAll('#keyboard .keyboard__key').forEach(function (element)
 document.querySelectorAll('#keyboard .keyboard__key').forEach(function (element) {
     let outForOut;
     element.onmouseup = function (event) {
-      console.log(event);
+  
         let BackspaceKey = '';
         let data = this.getAttribute('data');
         this.classList.remove('active');
@@ -397,6 +441,13 @@ function lenguageStatusChange(){
 if (lenguageStatus === 'en'){
   lenguageStatus = 'ru'
 } else {lenguageStatus = 'en'};
+
+localStorage["lenguageStatusKey"] = lenguageStatus;
+
+
+
 keyStatusRun ();
 
 }
+
+function fgh(){};
