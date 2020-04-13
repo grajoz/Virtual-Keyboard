@@ -10,12 +10,6 @@ body {
     display: block;
     height: auto;
     padding: 6px;
-    
-   /*grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
-    grid-template-areas:"yo 1 2 3 4 5 6 7 8 9 0 mi re Backspace Backspace"
-                        "Cl Cl a s d f g h j k l cp ap En En"
-                        "SL SL z x c v b n m co po sl Up SR SR"
-                        "Ctl Ctl All S S S S S Alr Str Str L D R";*/
 }
 .text {
     font-size: 14px;
@@ -54,49 +48,47 @@ body {
      left: 3px;
  }
 
-.Backquote  {
+.backquote  {
     width: 20px;
 }
-.Backspace {
+.backspace {
     width: 95px;
     font-size: 16px;
 }
-.Tab {
+.tab {
     width: 80px;
 }
-.CapsLock {
+.capslock {
     width: 80px;
     font-size: 14px;
 }
-.Enter{
+.enter{
     width: 90px;
 }
-.ShiftLeft {
+.shiftleft {
     width: 80px;
     font-size: 18px;
 }
-.ControlLeft {
+.controlleft {
     width: 80px;
     font-size: 18px;
 }
-.ShiftRight {
+.shiftright {
     width: 90px;
     font-size: 18px;
 }
-.Space {
+.space {
     width: 355px;
 }
-
     
-    
-.AltLeft {
+.altleft {
     font-size: 18px;
   }
   
-.AltRight {
+.altright {
     font-size: 18px;
 }
-.ControlRight {
+.controlright {
     font-size: 18px;
     white-space: pre-line;
 }
